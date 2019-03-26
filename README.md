@@ -17,15 +17,15 @@ To install the bindings via [Composer](http://getcomposer.org/), add the followi
 
 ```
 {
-  "repositories": [
-    {
-      "type": "git",
-	  "url": "https://github.com/enerspace/sevdesk-php-client.git"
-    }
-  ],
-  "require": {
-    "enerspace/sevdesk-php-client": "*@dev"
-  }
+	"repositories": [
+		{
+			"type": "git",
+			"url": "https://github.com/enerspace/sevdesk-php-client.git"
+		}
+	],
+	"require": {
+		"enerspace/sevdesk-php-client": "^1.0"
+	}
 }
 ```
 
