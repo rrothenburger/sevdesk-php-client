@@ -592,9 +592,9 @@ class VoucherPosApi
      * @throws \InvalidArgumentException
      * @return \Swagger\Client\Model\ModelVoucherPos
      */
-    public function getVoucherPositions($limit = '100', $offset = '0', $embed = null)
+    public function getVoucherPositions($voucher_id = null, $limit = '100', $offset = '0', $embed = null)
     {
-        list($response) = $this->getVoucherPositionsWithHttpInfo($limit, $offset, $embed);
+        list($response) = $this->getVoucherPositionsWithHttpInfo($voucher_id, $limit, $offset, $embed);
         return $response;
     }
 
@@ -611,10 +611,10 @@ class VoucherPosApi
      * @throws \InvalidArgumentException
      * @return array of \Swagger\Client\Model\ModelVoucherPos, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getVoucherPositionsWithHttpInfo($limit = '100', $offset = '0', $embed = null)
+    public function getVoucherPositionsWithHttpInfo($voucher_id = null, $limit = '100', $offset = '0', $embed = null)
     {
         $returnType = '\Swagger\Client\Model\ModelVoucherPos';
-        $request = $this->getVoucherPositionsRequest($limit, $offset, $embed);
+        $request = $this->getVoucherPositionsRequest($voucher_id, $limit, $offset, $embed);
 
         try {
             $options = $this->createHttpClientOption();
@@ -650,12 +650,12 @@ class VoucherPosApi
             } else {
                 $content = $responseBody->getContents();
                 if ($returnType !== 'string') {
-                    $content = json_decode($content);
+                    $content = json_decode($content, true);
                 }
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                $content,
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
@@ -761,7 +761,7 @@ class VoucherPosApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getVoucherPositionsRequest($limit = '100', $offset = '0', $embed = null)
+    protected function getVoucherPositionsRequest($voucher_id = null, $limit = '100', $offset = '0', $embed = null)
     {
 
         $resourcePath = '/VoucherPos';
@@ -771,6 +771,11 @@ class VoucherPosApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        if ($voucher_id !== null) {
+            $queryParams['voucher[objectName]'] = "Voucher";
+            $queryParams['voucher[id]'] = $voucher_id;
+        }
         // query params
         if ($limit !== null) {
             $queryParams['limit'] = ObjectSerializer::toQueryValue($limit);
@@ -849,6 +854,7 @@ class VoucherPosApi
         );
 
         $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        print_r($query);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
