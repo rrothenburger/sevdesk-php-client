@@ -631,12 +631,12 @@ class VoucherApi {
             } else {
                 $content = $responseBody->getContents();
                 if ($returnType !== 'string') {
-                    $content = json_decode($content);
+                    $content = json_decode($content, true);
                 }
             }
 
             return [
-                $content,
+                $content['objects'],
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
