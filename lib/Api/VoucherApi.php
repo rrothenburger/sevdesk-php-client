@@ -903,7 +903,7 @@ class VoucherApi {
             } else {
                 $content = $responseBody->getContents();
                 if ($returnType !== 'string') {
-                    $content = json_decode($content, treu);
+                    $content = json_decode($content, true);
                 }
             }
 
